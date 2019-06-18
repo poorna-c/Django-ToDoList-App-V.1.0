@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo Application {{today}}</title>
+
+    <style>
+        body{
+            background-color: #0A79DF;
+        }
+        .insert input{
+            width: 750px;
+            height: 30px;
+            font-size: 25px;
+            color: #192A56;
+            border: 2px black solid;
+            border-radius: 8px;
+            margin: 0;
+            padding: 5px;
+            text-transform: capitalize;
+            text-align: center;
+        }
+        button{
+            border: 2px black solid;
+            border-radius: 24px;
+            margin: 0px 10px;
+            padding: 5px;
+            font-size: 25px;
+            width: 120px;
+            background-color: green;
+            color: white;
+        }
+        .data button{
+                border: 2px black solid;
+                border-radius: 24px;
+                margin: 0px 10px;
+                padding: 5px;
+                font-size: 25px;
+                width: 120px;
+                background-color: #FAD02E;
+                color: black;
+        }
+        button:hover {
+            background-color: black;
+            color: #FAD02E;
+        }
+        .insert {
+            
+            width: fit-content;
+            margin: 30px auto;
+        }
+        .Heading{
+            color: white;
+            width: 80%;
+            margin: 20px auto;
+        }
+        .main {
+            
+        }
+        .data{
+            width: auto;
+            margin: 0;  
+        }
+        .data input[type = "checkbox"] {
+            position: relative;
+            left: 0px;
+            top: 6px;
+            width: 30px;
+            height: 30px;
+            
+        }
+        .data input[type="text"]{
+            width: 750px;
+            height: 30px;
+            font-size: 25px;
+            color: white;
+            margin: 0;
+            padding: 5px 10px;
+            text-transform: capitalize;
+            background-color: transparent;
+            border-radius: 24px;
+            border: 0px black solid;
+            text-align: left;
+        }
+        .data input[type="text"]:focus{
+            width: 750px;
+            height: 30px;
+            font-size: 25px;
+            color: white;
+            margin: 0;
+            padding: 5px 10px;
+            text-transform: capitalize;
+            background-color: transparent;
+            border-radius: 24px;
+            border: 3px black solid;
+            text-align: left;
+        }
+        .data button{
+            float: right;
+        }
+        .items{
+            margin: 15px auto;
+        }
+        .data button[name='info']{
+            transition: all 0.2s ease-in-out 0s;
+        }
+        .data label{
+            background-color: transparent;
+            color: white;
+            border: 0px black solid;
+            font-size: 20px;
+            margin: 0;
+            padding: 0px 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <h1 class="Heading">ToDo List Application <br> {{today}}</h1>
+    <div class="insert">
+        <form action="update" method="POST" autocomplete="off">
+            {% csrf_token %}
+            <input type="text" name="text" id="" autofocus>
+            <button type="submit" name="add" value="add">Add</button>
+            <button type="submit" name="save" value="save">Save</button>
+            <br>
+            <div class="data">
+                    {% for item in items %}
+                    <div class="items">
+                        {% if item.complete %}
+                        <input type="checkbox" name="C{{item.id}}" value="clicked" id="" checked> 
+                        {% else %}
+                        <input type="checkbox" name="C{{item.id}}" value="clicked" id=""> 
+                        {% endif%}
+                        <input type="text" name="data{{item.id}}" id="" value="{{item.text}}">
+                        <button type="button" name="info" value="info" onclick="displayinfo{{item.id}}()">info</button>
+                        <button type="submit" name="delete" value="{{item.id}}">Delete</button>
+                        <br>
+                        <label id="hiddenfield{{item.id}}" style="display: none"> Created On : {{item.created_date}} <br> Completed On : {{item.completed_date}} </label>
+                        <br>
+                        <script type="text/javascript">
+                            function displayinfo{{item.id}}() {
+                                var x = document.getElementById("hiddenfield{{item.id}}");
+                                if (x.style.display == "none") {
+                                  x.style.display = "block";
+                                } else {
+                                  x.style.display = "none";
+                                }
+                              }
+                        
+                        </script>
+                    </div>
+                    {% endfor %}
+            </div>
+        </form>
+    </div>
+    
+
+</div>
+</body>
+</html>
